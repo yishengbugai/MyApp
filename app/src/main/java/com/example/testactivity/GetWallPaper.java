@@ -29,14 +29,6 @@ import java.net.URL;
 public class GetWallPaper {
     private static final String TAG = "GetWallPaper";
     private static String judge1;
-    private static String filePath;
-    private static Bitmap mBitmap;
-    private static Context context;
-    private static String mSaveMessage;
-    private static String mFileName="妹子图片";
-
-
-
     public static void setWallpaper(final Activity activity, final String imgUrl,final String judge) {
 
         judge1=judge;
@@ -57,8 +49,6 @@ public class GetWallPaper {
                         //创建一个写入ID卡的文件对象
                         FileOutputStream out = null;
                         File download = null;
-                        String filename = String.valueOf(System.currentTimeMillis());//获取系统时间
-                        //判断文件是否存在   Environment.MEDIA_MOUNTEDID卡是否挂载  如果是则创建文件对象
                         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
 //                            File parent = Environment.getExternalStorageDirectory();//获取ID卡目录
                             File dirFile = new File(Environment.getExternalStorageDirectory().getPath());
@@ -80,23 +70,19 @@ public class GetWallPaper {
 
                         //读取该文件中的内容
                         final InputStream data=new FileInputStream(download.getAbsolutePath());
-                        final Bitmap bitmap = BitmapFactory.decodeFile(download.getAbsolutePath());
                         activity.runOnUiThread(new Runnable() {
                             @RequiresApi(api = Build.VERSION_CODES.N)
                             @Override
                             public void run() {
                                 //设置图片为壁纸
-                                //Bitmap bitmap = BitmapFactory.decodeResource(this.getResources(),R.drawable.bg_user_top);//设置项目res中的图片
                                 WallpaperManager manager = WallpaperManager.getInstance(activity);
                                 try {
                                     if(judge1.equals("主屏幕")){
                                     manager.setStream(data,null,true,WallpaperManager.FLAG_SYSTEM);
-//                                    manager.setBitmap(bitmap);
                                     Log.i(TAG, "run: "+"主屏幕设置成功");
                                         Toast.makeText(activity, "主屏幕设置成功", Toast.LENGTH_SHORT).show();}
                                     else if(judge1.equals("锁屏")){
                                         manager.setStream(data,null,true,WallpaperManager.FLAG_LOCK);
-//                                    manager.setBitmap(bitmap);
                                         Toast.makeText(activity, "锁屏设置成功", Toast.LENGTH_SHORT).show();
                                         Log.i(TAG, "run: "+"锁屏设置成功");
                                     }

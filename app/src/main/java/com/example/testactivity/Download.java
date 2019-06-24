@@ -25,7 +25,6 @@ public class Download {
     private static Bitmap mBitmap;
     private static Context context;
     private static String mSaveMessage;
-    private static String mFileName="妹子图片";
 
     public static void donwloadImage(Context contexts,String filePaths){
         context = contexts;
@@ -38,7 +37,7 @@ public class Download {
         public void run() {
             try{
                 mBitmap = BitmapFactory.decodeStream(getImageStream(filePath));
-                saveFile(mBitmap,mFileName);
+                saveFile(mBitmap);
                 mSaveMessage = "图片已保存到DCIM";
             }catch (IOException e){
                 mSaveMessage = "图片保存失败";
@@ -67,7 +66,7 @@ public class Download {
         return null;
     }
 
-    public static void saveFile(Bitmap bitmap,String filename)throws IOException{
+    public static void saveFile(Bitmap bitmap)throws IOException{
         File dirFile = new File(Environment.getExternalStorageDirectory().getPath());
         if (!dirFile.exists()){
             dirFile.mkdir();
