@@ -51,13 +51,14 @@ public class Main3Activity extends AppCompatActivity {
     String TAG = "Main3Activity";
     private String mSize = "0";
     private String mColor = "0";
-    private String mPage = "1";
+    private String mPage = "0";
     private RecyclerView recyclerView;
     private Handler handler;
     String url;
     String type;
     private ArrayList uurl =new ArrayList();
-
+    int i=0;
+    Elements elements;
 
 
 
@@ -115,11 +116,11 @@ public class Main3Activity extends AppCompatActivity {
                 try {
                     Document document = Jsoup.connect(url).get();
                     Elements elements = document.select("div.pages a");   //解释
-                    int i =0;
+                    int ii =0;
                     for (Element element : elements) {
                         uurl.add(element.select("a").attr("href"));
-                        Log.d("剩余页数链接",(String) uurl.get(i));
-                        i++;
+                        Log.d("剩余页数链接",(String) uurl.get(ii));
+                        ii++;
                     }
 
                 }
@@ -177,12 +178,14 @@ public class Main3Activity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    int i=0;
-//                    int page = Integer.valueOf(mPage)+1;
-//                    mPage = String.valueOf(page);
-//                    Log.i(TAG, "run: page== "+mPage);
+                     //翻页
+                    if(i<4){
                     Document document = Jsoup.connect((String) uurl.get(i)).get();
-                    Elements elements = document.select("div.Left_bar ul li");
+                    elements= document.select("div.Left_bar ul li");
+                        Log.i(TAG, "pagei= " + i);
+                        i++;
+                    }
+
 
                     for (Element element : elements) {
                         String image = element.select("a").first().children().first().attr("data-original");
@@ -198,14 +201,9 @@ public class Main3Activity extends AppCompatActivity {
                         pictureInfo.setTitle(title);
                         Log.i(TAG, "run: " + "放入pictureInfo");
                         listItems.add(pictureInfo);
-
-                        i++;  //翻页
-
                         Message msg = handler.obtainMessage(10);
                         msg.obj = listItems;
                         handler.sendMessage(msg);
-
-
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

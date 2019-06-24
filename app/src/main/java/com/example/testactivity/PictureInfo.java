@@ -4,7 +4,7 @@ public class PictureInfo {
     private String url;
     private String image;
     private String title;
-    private String title1;
+
 
     public  PictureInfo(){
 
